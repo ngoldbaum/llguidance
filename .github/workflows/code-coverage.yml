@@ -64,6 +64,10 @@ jobs:
   code-cov-python:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.14t"]
+
     steps:
     - name: Checkout repo at ${{ github.event_name == 'workflow_dispatch' && inputs.commit_id || github.sha }}
       uses: actions/checkout@v4
@@ -71,9 +75,9 @@ jobs:
         ref: ${{ github.event_name == 'workflow_dispatch' && inputs.commit_id || github.sha }}
 
     - name: Setup Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
-        python-version: "3.11"
+        python-version: ${{ matrix.python-version }}
 
     - name: Check environment
       run: |
