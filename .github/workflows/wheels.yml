@@ -58,6 +58,22 @@ jobs:
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
+  free-threaded-tests:
+    name: Test on free-threaded build
+    runs-on: ubuntu-latest
+    needs: [sdist]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14t"
+
+      - name: Install python test dependencies
+        run: ./scripts/install-deps.sh
+
+      - name: Run python guidance tests
+        run: ./scripts/test-guidance.sh
+
   linux:
     runs-on: ${{ matrix.platform.runner }}
     needs: [sdist]
